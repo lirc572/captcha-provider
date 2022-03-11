@@ -74,7 +74,7 @@ router.get('/', async (req, res) => {
  *           Invalid <code>cid</code>
  */
 router.get('/:cid', async (req, res) => {
-  const cap = await captcha.get(req.params.cid);
+  const cap = await captcha.get(req.params.cid || '');
   if (cap) {
     res
       .set({'Content-Type': 'image/svg+xml'})
@@ -126,7 +126,7 @@ router.get('/:cid', async (req, res) => {
  *           Unsuccessful (incorrect text)
  */
 router.post('/:cid', async (req, res) => {
-  const validated = await captcha.validate(req.params.cid, req.body.text);
+  const validated = await captcha.validate(req.params.cid || '', req.body.text || '');
   if (validated) {
     res.sendStatus(204);
   } else if (validated === undefined) {
